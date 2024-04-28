@@ -1,5 +1,5 @@
 name: Fly Deploy
-app_name: Fly Deploy
+
 on:
   push:
     branches:

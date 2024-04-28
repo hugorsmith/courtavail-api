@@ -4,6 +4,8 @@
 #
 
 app = 'courtavail-api'
+app_name = 'courtavail-api'
+
 primary_region = 'ewr'
 
 [build]
