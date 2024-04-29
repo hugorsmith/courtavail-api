@@ -51,8 +51,9 @@ def get_current_time_12h_est():
     datetime_est = datetime.now(EST)
     return datetime_est.strftime("%I:%M %p")
 
-def clean_court_times(court_available_times):
+def clean_court_times(court_available_times, target_date):
     # Get the current date and time in EST
+    
     current_time = datetime.now(EST)
     next_start = current_time.replace(second=0, microsecond=0, minute=0, hour=current_time.hour + 1)
 
@@ -61,10 +62,11 @@ def clean_court_times(court_available_times):
 
     # Current date to attach to time entries
     current_date = current_time.date()
+    target_date_dt = datetime.strptime(str(current_date), "%Y-%m-%d")
 
     for time in court_available_times:
-        # Parse the time with today's date
-        time_dt = datetime.strptime(f"{current_date} {time}", "%Y-%m-%d %I:%M %p")
+        # Parse the time with the target date
+        time_dt = datetime.strptime(f"{target_date} {time}", "%Y-%m-%d %I:%M %p")
         # Localize the datetime object
         time_dt = EST.localize(time_dt)
 
@@ -207,9 +209,9 @@ def get_court_availability(date):
     today = datetime.now(EST)
 
     if date_raw <= today:
-        # print("Cleaning times")
+        print("Cleaning times")
         # print(court_available_times)
-        court_available_times = clean_court_times(court_available_times)
+        court_available_times = clean_court_times(court_available_times, date)
 
 
     # Get rid of 30 minute time slots
@@ -219,5 +221,5 @@ def get_court_availability(date):
     return court_available_times
 
 
-# x = get_court_availability("2024-04-28")
-# print(x)
+x = get_court_availability("2024-04-30")
+print(x)
