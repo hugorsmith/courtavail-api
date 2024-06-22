@@ -130,6 +130,7 @@ def get_court_availability(date):
     formatted_date = format_date_for_server(date)
     operating_hours = get_operating_hours(cookies)
 
+
     if not operating_hours:
         return "Failed to fetch operating hours"
 
@@ -160,6 +161,8 @@ def get_court_availability(date):
     fetched_bookings = fetch_court_bookings(formatted_date, cookies)
     if not fetched_bookings or len(fetched_bookings) < 2:
         return "Failed to fetch booking data"
+    
+    # print(fetched_bookings)
 
     # Process each booking
     target_bookings = fetched_bookings[1]  # Assuming the bookings are in the second item
@@ -191,7 +194,7 @@ def get_court_availability(date):
             length_hrs -= 0.5
 
     # Number of clay courts available
-    num_clay_courts = 9
+    num_clay_courts = 6
 
     # Determine available time slots
     court_available_times = []
@@ -221,5 +224,5 @@ def get_court_availability(date):
     return court_available_times
 
 
-x = get_court_availability("2024-04-30")
+x = get_court_availability("2024-06-25")
 print(x)
