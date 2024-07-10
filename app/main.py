@@ -4,6 +4,16 @@ from app.tenniscourts_v1 import get_court_availability
 
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/")
 def root():
     return {"message": "Welcome to the PPTC court availability API. Please submit a request in the format /date/[YYYY-MM-DD]."}
