@@ -53,25 +53,26 @@ def get_current_time_12h_est():
 
 def clean_court_times(court_available_times, target_date):
     # Get the current date and time in EST
-    
     current_time = datetime.now(EST)
-    next_start = current_time.replace(second=0, microsecond=0, minute=0, hour=current_time.hour + 1)
+    
+    # Calculate the next hour, handling rollover to the next day if necessary
+    next_hour = (current_time.hour + 1) % 24
+    next_start = current_time.replace(second=0, microsecond=0, minute=0, hour=next_hour)
+    
+    if next_hour == 0:
+        next_start += timedelta(days=1)
 
     # Prepare to collect cleaned times
     cleaned_times = []
 
-    # Current date to attach to time entries
-    current_date = current_time.date()
-    target_date_dt = datetime.strptime(str(current_date), "%Y-%m-%d")
+    # Parse the target date
+    target_date_dt = datetime.strptime(target_date, "%Y-%m-%d")
 
     for time in court_available_times:
         # Parse the time with the target date
         time_dt = datetime.strptime(f"{target_date} {time}", "%Y-%m-%d %I:%M %p")
         # Localize the datetime object
         time_dt = EST.localize(time_dt)
-
-        # 
-        # print("Checking time:", time, "->", time_dt)
 
         # Keep only times that are later than the next hour start
         if time_dt >= next_start:

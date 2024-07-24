@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import uvicorn
 import json
 from app.tenniscourts_v1 import get_court_availability
@@ -24,7 +25,7 @@ def root():
 def get_courts(date: str):
     available_times = get_court_availability(date)
     response = {"date": date, "available_times": available_times}
-    return json.dumps(response)
+    return JSONResponse(content=response)
 
 
 if __name__ == "__main__":
